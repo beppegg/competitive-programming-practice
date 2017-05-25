@@ -1,0 +1,44 @@
+11 TheSnail573
+9 MULTI_EOF
+8 STANDARD
+9 input.txt
+8 STANDARD
+10 output.txt
+2
+0
+63 6 3 1 10
+10 2 1 50
+50 5 3 14
+50 6 4 1
+50 6 3 1
+1 1 1 1
+0 0 0 0
+
+104 success on day 3
+failure on day 4
+failure on day 7
+failure on day 68
+success on day 20
+failure on day 2
+
+1
+1
+15 1 1 1 1
+0 0 0 0
+17 failure on day 2
+
+0
+8 src/main
+16 -Xmx256m -Xss64m
+4 Main
+16 main.TheSnail573
+39 net.egork.chelper.checkers.TokenChecker
+0 
+0
+10 2017.05.26
+12 UVa Practice
+1
+17 java.util.Scanner
+19 java.io.PrintWriter
+0
+0
