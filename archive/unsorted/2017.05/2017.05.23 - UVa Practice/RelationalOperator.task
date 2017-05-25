@@ -1,0 +1,31 @@
+18 RelationalOperator
+12 MULTI_NUMBER
+8 STANDARD
+9 input.txt
+8 STANDARD
+10 output.txt
+1
+0
+20 3
+10 20
+20 10
+10 10
+
+5 <
+>
+=
+1
+8 src/main
+16 -Xmx256m -Xss64m
+4 Main
+23 main.RelationalOperator
+39 net.egork.chelper.checkers.TokenChecker
+0 
+0
+10 2017.05.23
+12 UVa Practice
+1
+17 java.util.Scanner
+19 java.io.PrintWriter
+0
+0
