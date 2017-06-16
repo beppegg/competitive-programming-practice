@@ -1,0 +1,27 @@
+23 Quicksort 1 - Partition
+6 SINGLE
+8 STANDARD
+9 input.txt
+8 STANDARD
+10 output.txt
+1
+0
+11 5
+4 5 3 7 2
+10 3 2 4 5 7
+
+1
+8 src/main
+8 -Xmx256M
+8 Solution
+24 main.Quicksort1Partition
+39 net.egork.chelper.checkers.TokenChecker
+0 
+0
+10 2017.05.30
+26 HackerRank Algorithm Trail
+1
+17 java.util.Scanner
+19 java.io.PrintWriter
+0
+0
