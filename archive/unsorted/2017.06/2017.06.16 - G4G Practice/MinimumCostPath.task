@@ -1,0 +1,28 @@
+15 MinimumCostPath
+6 SINGLE
+8 STANDARD
+9 input.txt
+8 STANDARD
+10 output.txt
+1
+0
+21 3 3
+1 2 3
+4 8 2
+1 5 3
+1 8
+1
+8 src/task
+16 -Xmx256m -Xss64m
+4 Main
+20 task.MinimumCostPath
+39 net.egork.chelper.checkers.TokenChecker
+0 
+0
+10 2017.06.16
+12 G4G Practice
+1
+34 net.egork.chelper.util.InputReader
+19 java.io.PrintWriter
+0
+0
