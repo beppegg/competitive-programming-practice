@@ -5,7 +5,7 @@ import java.util.Comparator;
 /**
  * Segment tree implementation.
  */
-public class SegmentTree<T extends Comparable> {
+public class SegmentTreeRangeMinimumQuery<T extends Comparable> {
 
     private final T[] array;
 
@@ -13,7 +13,7 @@ public class SegmentTree<T extends Comparable> {
 
     private final int[] segmentTree;
 
-    public SegmentTree(T[] array, Comparator<T> comparator) {
+    public SegmentTreeRangeMinimumQuery(T[] array, Comparator<T> comparator) {
         this.array = array;
         this.comparator = comparator != null ? comparator : Comparator.naturalOrder();
         this.segmentTree = new int[4 * array.length];
