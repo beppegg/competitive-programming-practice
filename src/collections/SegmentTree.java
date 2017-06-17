@@ -77,6 +77,33 @@ public class SegmentTree<T extends Comparable> {
         return minPos;
     }
 
+    public void updatePosition(int position) {
+        this.updatePosition(1, 0, array.length - 1, position);
+    }
+
+    private void updatePosition(int position, int left, int right, int targetPosition) {
+        if (left == targetPosition && targetPosition == right) {
+            return;
+        } else if (left <= targetPosition && targetPosition <= right) {
+            // update subtrees
+            int middle = left + (right - left) / 2;
+            final int leftPosition = leftSubtree(position);
+            final int rightPosition = rightSubtree(position);
+
+            updatePosition(leftPosition, left, middle, targetPosition);
+            updatePosition(rightPosition, middle + 1, right, targetPosition);
+
+            int minPosLeft = segmentTree[leftPosition];
+            int minPosRight = segmentTree[rightPosition];
+
+            if (comparator.compare(array[minPosLeft], array[minPosRight]) <= 0) {
+                segmentTree[position] = minPosLeft;
+            } else {
+                segmentTree[position] = minPosRight;
+            }
+        }
+    }
+
     public int query(int minPos, int maxPos) {
         return query(1, 1, array.length - 1, minPos, maxPos);
     }
