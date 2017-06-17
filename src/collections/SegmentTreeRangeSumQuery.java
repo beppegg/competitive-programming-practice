@@ -1,5 +1,7 @@
 package collections;
 
+import java.util.Arrays;
+
 /**
  * Segment tree implementation.
  */
@@ -10,7 +12,7 @@ public class SegmentTreeRangeSumQuery {
     private final int[] segmentTree;
 
     public SegmentTreeRangeSumQuery(int[] array) {
-        this.array = array;
+        this.array = Arrays.copyOf(array, array.length);
         this.segmentTree =
                 build(new int[4 * array.length], this.array, 1, 0, array.length - 1);
     }
@@ -57,7 +59,8 @@ public class SegmentTreeRangeSumQuery {
         return sumLeft + sumRight;
     }
 
-    public void updatePosition(int position) {
+    public void update(int position, int value) {
+        this.array[position] = value;
         this.updatePosition(1, 0, array.length - 1, position);
     }
 

@@ -1,5 +1,6 @@
 package collections;
 
+import java.util.Arrays;
 import java.util.Comparator;
 
 /**
@@ -14,7 +15,7 @@ public class SegmentTreeRangeMinimumQuery<T extends Comparable> {
     private final int[] segmentTree;
 
     public SegmentTreeRangeMinimumQuery(T[] array, Comparator<T> comparator) {
-        this.array = array;
+        this.array = Arrays.copyOf(array, array.length);
         this.comparator = comparator != null ? comparator : Comparator.naturalOrder();
         this.segmentTree = new int[4 * array.length];
         build(this.segmentTree, this.array, this.comparator, 1, 0, array.length - 1);
@@ -77,7 +78,8 @@ public class SegmentTreeRangeMinimumQuery<T extends Comparable> {
         return minPos;
     }
 
-    public void updatePosition(int position) {
+    public void update(int position, T value) {
+        this.array[position] = value;
         this.updatePosition(1, 0, array.length - 1, position);
     }
 

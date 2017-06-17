@@ -23,6 +23,7 @@ class SegmentTreeTest {
         assertThat(secondTree.query(1, 7)).isEqualTo(6);
         assertThat(secondTree.query(3, 8)).isEqualTo(6);
     }
+
     @Test
     void testUpdateAndQueryRMQ() {
         // given
@@ -30,8 +31,7 @@ class SegmentTreeTest {
         SegmentTreeRangeMinimumQuery<Integer> segmentTree = new SegmentTreeRangeMinimumQuery<>(baseArray, null);
 
         // when
-        baseArray[5] = 99;
-        segmentTree.updatePosition(5);
+        segmentTree.update(5, 99);
 
         // then
         assertThat(segmentTree.query(1, 3)).isEqualTo(2);
@@ -59,12 +59,10 @@ class SegmentTreeTest {
     @Test
     void testUpdateAndQueryRSQ() {
         // given
-        int[] baseArray = {18, 17, 13, 19, 15, 11, 20};
-        SegmentTreeRangeSumQuery segmentTree = new SegmentTreeRangeSumQuery(baseArray);
+        SegmentTreeRangeSumQuery segmentTree = new SegmentTreeRangeSumQuery(new int[]{18, 17, 13, 19, 15, 11, 20});
 
         // when
-        baseArray[5] = 32;
-        segmentTree.updatePosition(5);
+        segmentTree.update(5, 32);
 
         // then
         assertThat(segmentTree.query(1, 3)).isEqualTo(49);
