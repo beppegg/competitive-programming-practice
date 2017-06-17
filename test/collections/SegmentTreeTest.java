@@ -38,6 +38,21 @@ class SegmentTreeTest {
         assertThat(segmentTree.query(4, 6)).isEqualTo(4);
     }
 
+
+    @Test
+    void testRangeUpdateAndQueryRMQ() {
+        // given
+        SegmentTreeRangeMinimumQuery<Integer> segmentTree =
+                new SegmentTreeRangeMinimumQuery<>(new Integer[]{18, 17, 13, 19, 15, 11, 20}, null);
+
+        // when
+        segmentTree.update(3, 5, 32);
+
+        // then
+        assertThat(segmentTree.query(1, 3)).isEqualTo(2);
+        assertThat(segmentTree.query(4, 6)).isEqualTo(6);
+    }
+
     @Test
     void testBuildAndQueryRSQ() {
         // given

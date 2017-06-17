@@ -80,20 +80,25 @@ public class SegmentTreeRangeMinimumQuery<T extends Comparable> {
 
     public void update(int position, T value) {
         this.array[position] = value;
-        this.updatePosition(1, 0, array.length - 1, position);
+        this.updatePosition(1, 0, array.length - 1, position, position);
     }
 
-    private void updatePosition(int position, int left, int right, int targetPosition) {
-        if (left == targetPosition && targetPosition == right) {
+    public void update(int from, int to, T value) {
+        Arrays.fill(this.array, from, to + 1, value);
+        this.updatePosition(1, 0, array.length - 1, from, to);
+    }
+
+    private void updatePosition(int position, int left, int right, int targetFrom, int targetTo) {
+        if (left == right && targetFrom <= left && right <= targetTo) {
             return;
-        } else if (left <= targetPosition && targetPosition <= right) {
+        } else if (Math.max(targetFrom, left) <= Math.min(targetTo, right)) {
             // update subtrees
             int middle = left + (right - left) / 2;
             final int leftPosition = leftSubtree(position);
             final int rightPosition = rightSubtree(position);
 
-            updatePosition(leftPosition, left, middle, targetPosition);
-            updatePosition(rightPosition, middle + 1, right, targetPosition);
+            updatePosition(leftPosition, left, middle, targetFrom, targetTo);
+            updatePosition(rightPosition, middle + 1, right, targetFrom, targetTo);
 
             int minPosLeft = segmentTree[leftPosition];
             int minPosRight = segmentTree[rightPosition];
