@@ -7,14 +7,14 @@ import java.util.Arrays;
  */
 public class SegmentTreeRangeSumQuery {
 
-    private final int[] array;
 
     private final int[] segmentTree;
+    private final int elements;
 
     public SegmentTreeRangeSumQuery(int[] array) {
-        this.array = Arrays.copyOf(array, array.length);
+        this.elements = array.length - 1;
         this.segmentTree =
-                build(new int[4 * array.length], this.array, 1, 0, array.length - 1);
+                build(new int[4 * array.length], array, 1, 0, array.length - 1);
     }
 
     private int[] build(int[] segmentTree, int[] array, int position, int left, int right) {
@@ -60,21 +60,24 @@ public class SegmentTreeRangeSumQuery {
     }
 
     public void update(int position, int value) {
-        this.array[position] = value;
-        this.updatePosition(1, 0, array.length - 1, position);
+        this.updatePosition(1, value, 0, elements, position, position);
     }
 
-    private void updatePosition(int position, int left, int right, int targetPosition) {
-        if (left == targetPosition && targetPosition == right) {
-            segmentTree[position] = array[targetPosition];
-        } else if (left <= targetPosition && targetPosition <= right) {
+    public void update(int from, int to, int value) {
+        this.updatePosition(1, value, 0, elements, from, to);
+    }
+
+    private void updatePosition(int position, int value, int left, int right, int targetFrom, int targetTo) {
+        if (left == right && targetFrom <= left && right <= targetTo) {
+            segmentTree[position] = value;
+        } else if (Math.max(targetFrom, left) <= Math.min(targetTo, right)) {
             // update subtrees
             int middle = left + (right - left) / 2;
             final int leftPosition = leftSubtree(position);
             final int rightPosition = rightSubtree(position);
 
-            updatePosition(leftPosition, left, middle, targetPosition);
-            updatePosition(rightPosition, middle + 1, right, targetPosition);
+            updatePosition(leftPosition, value, left, middle, targetFrom, targetTo);
+            updatePosition(rightPosition, value, middle + 1, right, targetFrom, targetTo);
 
             int sumLeft = segmentTree[leftPosition];
             int sumRight = segmentTree[rightPosition];
@@ -84,7 +87,7 @@ public class SegmentTreeRangeSumQuery {
     }
 
     public int query(int minPos, int maxPos) {
-        return query(1, 0, array.length - 1, minPos, maxPos);
+        return query(1, 0, elements, minPos, maxPos);
     }
 
     private int leftSubtree(int index) {
