@@ -55,4 +55,19 @@ class SegmentTreeTest {
         assertThat(secondTree.query(1, 7)).isEqualTo(167);
         assertThat(secondTree.query(3, 8)).isEqualTo(139);
     }
+
+    @Test
+    void testUpdateAndQueryRSQ() {
+        // given
+        int[] baseArray = {18, 17, 13, 19, 15, 11, 20};
+        SegmentTreeRangeSumQuery segmentTree = new SegmentTreeRangeSumQuery(baseArray);
+
+        // when
+        baseArray[5] = 32;
+        segmentTree.updatePosition(5);
+
+        // then
+        assertThat(segmentTree.query(1, 3)).isEqualTo(49);
+        assertThat(segmentTree.query(4, 6)).isEqualTo(67);
+    }
 }

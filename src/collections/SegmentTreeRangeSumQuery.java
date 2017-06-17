@@ -63,7 +63,7 @@ public class SegmentTreeRangeSumQuery {
 
     private void updatePosition(int position, int left, int right, int targetPosition) {
         if (left == targetPosition && targetPosition == right) {
-            return;
+            segmentTree[position] = array[targetPosition];
         } else if (left <= targetPosition && targetPosition <= right) {
             // update subtrees
             int middle = left + (right - left) / 2;
