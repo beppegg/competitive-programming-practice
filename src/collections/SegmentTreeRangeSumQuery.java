@@ -7,14 +7,20 @@ import java.util.Arrays;
  */
 public class SegmentTreeRangeSumQuery {
 
-
     private final int[] segmentTree;
-    private final int elements;
+    private final int[] pending;
+    private final int[] base;
 
     public SegmentTreeRangeSumQuery(int[] array) {
-        this.elements = array.length - 1;
+        this(array, true);
+    }
+
+    public SegmentTreeRangeSumQuery(int[] array, boolean safeCopy) {
+        this.base = safeCopy ? Arrays.copyOf(array, array.length) : array;
+        final int segmentTreeDimension = 2 * (int) Math.pow(2, Math.ceil(Math.log(array.length) / Math.log(2))) - 1;
+        this.pending = new int[segmentTreeDimension];
         this.segmentTree =
-                build(new int[4 * array.length], array, 1, 0, array.length - 1);
+                build(new int[segmentTreeDimension], array, 1, 0, array.length - 1);
     }
 
     private int[] build(int[] segmentTree, int[] array, int position, int left, int right) {
@@ -49,6 +55,12 @@ public class SegmentTreeRangeSumQuery {
         }
         if (targetLeft <= left && right <= targetRight) {
             // contains target range
+            if (pending[position] > 0) {
+                segmentTree[position] += pending[position];
+                pending[leftSubtree(position)] += pending[position];
+                pending[rightSubtree(position)] += pending[position];
+                pending[position] = 0;
+            }
             return segmentTree[position];
         }
 
@@ -59,25 +71,31 @@ public class SegmentTreeRangeSumQuery {
         return sumLeft + sumRight;
     }
 
-    public void update(int position, int value) {
-        this.updatePosition(1, value, 0, elements, position, position);
+    public void update(int position, int relativeValue) {
+        this.updatePosition(1, relativeValue, 0, base.length - 1, position, position);
     }
 
-    public void update(int from, int to, int value) {
-        this.updatePosition(1, value, 0, elements, from, to);
+    public void update(int from, int to, int relativeValue) {
+        this.updatePosition(1, relativeValue, 0, base.length - 1, from, to);
     }
 
-    private void updatePosition(int position, int value, int left, int right, int targetFrom, int targetTo) {
+    private void updatePosition(int position, int relativeValue, int left, int right, int targetFrom, int targetTo) {
         if (left == right && targetFrom <= left && right <= targetTo) {
-            segmentTree[position] = value;
+            // reached a leaf, update the value
+            base[left] += pending[position] + relativeValue;
+            segmentTree[position] += pending[position] + relativeValue;
+            pending[position] = 0;
+        } else if (targetFrom <= left && right <= targetTo) {
+            // this node is completly contained in target range: we can pospone updates
+            pending[position] += relativeValue;
         } else if (Math.max(targetFrom, left) <= Math.min(targetTo, right)) {
             // update subtrees
             int middle = left + (right - left) / 2;
             final int leftPosition = leftSubtree(position);
             final int rightPosition = rightSubtree(position);
 
-            updatePosition(leftPosition, value, left, middle, targetFrom, targetTo);
-            updatePosition(rightPosition, value, middle + 1, right, targetFrom, targetTo);
+            updatePosition(leftPosition, relativeValue, left, middle, targetFrom, targetTo);
+            updatePosition(rightPosition, relativeValue, middle + 1, right, targetFrom, targetTo);
 
             int sumLeft = segmentTree[leftPosition];
             int sumRight = segmentTree[rightPosition];
@@ -87,7 +105,7 @@ public class SegmentTreeRangeSumQuery {
     }
 
     public int query(int minPos, int maxPos) {
-        return query(1, 0, elements, minPos, maxPos);
+        return query(1, 0, base.length - 1, minPos, maxPos);
     }
 
     private int leftSubtree(int index) {

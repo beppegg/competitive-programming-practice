@@ -1,5 +1,6 @@
 package collections;
 
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -7,6 +8,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 class SegmentTreeTest {
 
     @Test
+    @Tag("rmq")
     void testBuildAndQueryRMQ() {
         // given
         Integer[] baseArray = {18, 17, 13, 19, 15, 11, 20};
@@ -25,6 +27,7 @@ class SegmentTreeTest {
     }
 
     @Test
+    @Tag("rmq")
     void testUpdateAndQueryRMQ() {
         // given
         Integer[] baseArray = {18, 17, 13, 19, 15, 11, 20};
@@ -38,8 +41,8 @@ class SegmentTreeTest {
         assertThat(segmentTree.query(4, 6)).isEqualTo(4);
     }
 
-
     @Test
+    @Tag("rmq")
     void testRangeUpdateAndQueryRMQ() {
         // given
         SegmentTreeRangeMinimumQuery<Integer> segmentTree =
@@ -54,6 +57,7 @@ class SegmentTreeTest {
     }
 
     @Test
+    @Tag("rsq")
     void testBuildAndQueryRSQ() {
         // given
         int[] baseArray = {18, 17, 13, 19, 15, 11, 20};
@@ -72,12 +76,13 @@ class SegmentTreeTest {
     }
 
     @Test
+    @Tag("rsq")
     void testUpdateAndQueryRSQ() {
         // given
         SegmentTreeRangeSumQuery segmentTree = new SegmentTreeRangeSumQuery(new int[]{18, 17, 13, 19, 15, 11, 20});
 
         // when
-        segmentTree.update(5, 32);
+        segmentTree.update(5, 21);
 
         // then
         assertThat(segmentTree.query(1, 3)).isEqualTo(49);
@@ -85,12 +90,13 @@ class SegmentTreeTest {
     }
 
     @Test
+    @Tag("rsq")
     void testRangeUpdateAndQueryRSQ() {
         // given
         SegmentTreeRangeSumQuery segmentTree = new SegmentTreeRangeSumQuery(new int[]{18, 17, 13, 19, 15, 11, 20});
 
         // when
-        segmentTree.update(3, 5, 32);
+        segmentTree.update(3, 5, 21);
 
         // then
         assertThat(segmentTree.query(1, 3)).isEqualTo(62);
