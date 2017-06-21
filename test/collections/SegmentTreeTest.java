@@ -99,7 +99,7 @@ class SegmentTreeTest {
         segmentTree.update(3, 5, 21);
 
         // then
-        assertThat(segmentTree.query(1, 3)).isEqualTo(62);
-        assertThat(segmentTree.query(4, 6)).isEqualTo(84);
+        assertThat(segmentTree.query(1, 3)).isEqualTo(70);
+        assertThat(segmentTree.query(4, 6)).isEqualTo(88);
     }
 }

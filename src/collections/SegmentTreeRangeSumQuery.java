@@ -49,18 +49,17 @@ public class SegmentTreeRangeSumQuery {
      * Range Minimum Query
      */
     private int query(int position, int left, int right, int targetLeft, int targetRight) {
+        if (pending[position] != 0) {
+            lazyUpdate(position, left, right, pending[position]);
+            pending[position] = 0;
+        }
+
         if (targetRight < left || right < targetLeft) {
             // completely outside target range
             return 0;
         }
         if (targetLeft <= left && right <= targetRight) {
             // contains target range
-            if (pending[position] > 0) {
-                segmentTree[position] += pending[position];
-                pending[leftSubtree(position)] += pending[position];
-                pending[rightSubtree(position)] += pending[position];
-                pending[position] = 0;
-            }
             return segmentTree[position];
         }
 
@@ -80,14 +79,19 @@ public class SegmentTreeRangeSumQuery {
     }
 
     private void updatePosition(int position, int relativeValue, int left, int right, int targetFrom, int targetTo) {
+        if (pending[position] != 0) {
+            lazyUpdate(position, left, right, pending[position]);
+            pending[position] = 0;
+        }
+
         if (left == right && targetFrom <= left && right <= targetTo) {
             // reached a leaf, update the value
-            base[left] += pending[position] + relativeValue;
-            segmentTree[position] += pending[position] + relativeValue;
+            base[left] += relativeValue;
+            segmentTree[position] += relativeValue;
             pending[position] = 0;
         } else if (targetFrom <= left && right <= targetTo) {
             // this node is completly contained in target range: we can pospone updates
-            pending[position] += relativeValue;
+            lazyUpdate(position, left, right, relativeValue);
         } else if (Math.max(targetFrom, left) <= Math.min(targetTo, right)) {
             // update subtrees
             int middle = left + (right - left) / 2;
@@ -102,6 +106,15 @@ public class SegmentTreeRangeSumQuery {
 
             segmentTree[position] = sumLeft + sumRight;
         }
+    }
+
+    private void lazyUpdate(int position, int left, int right, int amount) {
+        segmentTree[position] += (right - left + 1) * amount;
+        if (left != right) {
+            pending[leftSubtree(position)] += amount;
+            pending[rightSubtree(position)] += amount;
+        }
+
     }
 
     public int query(int minPos, int maxPos) {
